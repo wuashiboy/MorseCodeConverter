@@ -11,7 +11,7 @@ namespace MorseCodeConverter
     {
         static void Main(string[] args)
         {
-           
+
             var filePath = "MorseCode.csv";
             var newMorse = new Dictionary<char, string>();
 
@@ -20,11 +20,10 @@ namespace MorseCodeConverter
                 while (sr.Peek() > 0)
                 {
                     var line = sr.ReadLine().Split(',');
-                    var ALetter = Convert.ToChar(line[0]);
-
+                    var Aletter = Convert.ToChar(line[0]);
                     var Line = line[1];
 
-                    newMorse.Add(ALetter, Line);
+                    newMorse.Add(Aletter, Line);
                 }
                 //}
                 //foreach(var key in newMorse.Keys)
@@ -32,21 +31,78 @@ namespace MorseCodeConverter
                 //Console.WriteLine($"{key} , {newMorse[key]}");
                 //Console.WriteLine($"for D Morse code is {newMorse['D']}");
 
-                Console.WriteLine("Please type your message to be converted to Morse code");
+                Console.WriteLine("Please enter your message that you would like to be converted into Morse code");
 
-                string inputstring = Console.ReadLine().ToUpper().Replace (" " , "");
-                //var rv = newMorse;
-                foreach (var ALetter in inputstring)
+                string inputstring = Console.ReadLine().ToString().ToUpper().Replace(" ", "");
+                var converted = string.Empty;
+                foreach (var Aletter in inputstring)
                 {
 
-                    var convertedLetter = newMorse[ALetter];
+                    var convertedLetter = newMorse[Aletter];
+                    converted += convertedLetter;
                     Console.Write(convertedLetter);
+
+                }
+
+                //var sw = new StreamWriter("ReadIn.csv");
+                //sw.Close();
+
+                var now = inputstring.ToString();
+                var textpath = "ReadIn.csv";
+
+                using (var SW = File.AppendText(textpath))
+                {
+                    SW.WriteLine(now);
+                    SW.WriteLine(converted);
                 }
                 
             }
-            
+            {
+                Console.WriteLine();
+                
+                var DoitAgain = true;
+                while (DoitAgain)
+                {
+                    Console.WriteLine("Would you like to convert another message: y/n" + "?");
+                    var answer = Console.ReadLine();
+                    if (answer == "y")
+
+                    {
+                        Console.WriteLine("Please enter another message:");
+                        string inputstring = Console.ReadLine().ToString().ToUpper().Replace(" ", "");
+                        var converted = string.Empty;
+                        foreach (var Aletter in inputstring)
+                        {
+
+                            var convertedLetter = newMorse[Aletter];
+                            converted += convertedLetter;
+                            Console.Write(convertedLetter);
+
+                        }
+
+                        var now = inputstring.ToString();
+                        var textpath = "ReadIn.csv";
+
+                        using (var SW = File.AppendText(textpath))
+                        {
+                            SW.WriteLine(now);
+                            SW.WriteLine(converted);
+                        }
+                        continue;
+                                                    
+                    }
+                    else if (answer == "n")
+                    {
+                        break;
+                    }
+                }
+                
+            }
             Console.ReadLine();
+
         }
+        
     }
+
 }
 
